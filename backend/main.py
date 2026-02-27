@@ -47,8 +47,7 @@ async def shutdown():
 class RegisterModel(BaseModel):
     login: str
     email: str
-        password: str
-
+    password: str
 class LoginModel(BaseModel):
     login: str
     password: str
