@@ -1,0 +1,2 @@
+[phases.setup]
+apt = ["gcc", "python3-dev", "libpq-dev"]
