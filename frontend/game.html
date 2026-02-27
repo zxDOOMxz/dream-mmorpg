@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>DreamMMORPG - Game</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Overlay: create character -->
+<div class="create-char-overlay" id="createCharOverlay">
+  <div class="create-char-box">
+    <h2>&#9876; Create Character</h2>
+    <input type="text" id="charName" placeholder="Character name" style="width:100%;padding:10px;background:#0e0820;border:1px solid #3a1060;border-radius:6px;color:#c8b89a;font-size:1rem;margin-bottom:4px;">
+    <p style="color:#7a6a9a;font-size:0.85rem;margin-bottom:4px;">Choose class:</p>
+    <div class="class-grid">
+      <div class="class-card selected" onclick="selectClass(this,'warrior')"><div class="class-icon">&#9876;</div><div class="class-name">Warrior</div></div>
+      <div class="class-card" onclick="selectClass(this,'mage')"><div class="class-icon">&#10024;</div><div class="class-name">Mage</div></div>
+      <div class="class-card" onclick="selectClass(this,'rogue')"><div class="class-icon">&#128608;</div><div class="class-name">Rogue</div></div>
+      <div class="class-card" onclick="selectClass(this,'archer')"><div class="class-icon">&#127993;</div><div class="class-name">Archer</div></div>
+    </div>
+    <button class="btn-primary" style="width:100%" onclick="createCharacter()">Enter World</button>
+    <div id="char-msg" class="message"></div>
+  </div>
+</div>
+
+<div class="game-layout">
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <span class="char-name" id="topName">...</span>
+    <span class="bar-label">HP</span>
+    <div class="hp-bar"><div class="hp-fill" id="hpFill" style="width:100%"></div></div>
+    <span id="hpText" style="font-size:0.75rem;color:#9a7acc"></span>
+    <span class="bar-label">XP</span>
+    <div class="xp-bar"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+    <span id="lvlText" style="font-size:0.8rem;color:#9a7acc">Lv.1</span>
+    <span class="gold" id="goldText">&#9733; 0</span>
+    <span style="margin-left:8px;color:#7a6a9a;font-size:0.8rem;cursor:pointer" onclick="logout()">[ Выйти ]</span>
+  </div>
+
+  <!-- LEFT PANEL: stats -->
+  <div class="left-panel">
+    <h3>&#9876; Stats</h3>
+    <div class="stat-row"><span>Class</span><span class="stat-val" id="sClass">-</span></div>
+    <div class="stat-row"><span>Level</span><span class="stat-val" id="sLvl">1</span></div>
+    <div class="stat-row"><span>HP</span><span class="stat-val" id="sHp">-</span></div>
+    <div class="stat-row"><span>Attack</span><span class="stat-val" id="sAtk">-</span></div>
+    <div class="stat-row"><span>Defense</span><span class="stat-val" id="sDef">-</span></div>
+    <div class="stat-row"><span>Speed</span><span class="stat-val" id="sSpd">-</span></div>
+    <div class="stat-row"><span>Location</span><span class="stat-val" id="sLoc">-</span></div>
+    <div class="stat-row"><span>X</span><span class="stat-val" id="sPosX">0</span></div>
+    <div class="stat-row"><span>Y</span><span class="stat-val" id="sPosY">0</span></div>
+    <h3 style="margin-top:16px">&#127809; Locations</h3>
+    <div id="locationsList"></div>
+  </div>
+
+  <!-- MAP CANVAS -->
+  <div class="map-area">
+    <canvas id="gameCanvas"></canvas>
+  </div>
+
+  <!-- RIGHT PANEL: players online -->
+  <div class="right-panel">
+    <h3>&#127760; Online</h3>
+    <div class="players-list" id="playersList"><div style="color:#5a4a6a;font-size:0.8rem">Loading...</div></div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="chat-area">
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="Enter message... (Enter to send)" />
+      <button onclick="sendChat()">Send</button>
+    </div>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

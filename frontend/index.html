@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DreamMMORPG</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="login-bg">
+  <div class="login-box">
+    <div class="game-logo">
+      <h1>&#9876; DreamMMORPG</h1>
+      <p class="tagline">Enter the world of legends</p>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('login')">Войти</button>
+      <button class="tab-btn" onclick="showTab('register')">Регистрация</button>
+    </div>
+    <div id="login" class="tab-content active">
+      <input type="text" id="login-username" placeholder="Логин" />
+      <input type="password" id="login-password" placeholder="Пароль" />
+      <button class="btn-primary" onclick="doLogin()">Войти в игру</button>
+    </div>
+    <div id="register" class="tab-content">
+      <input type="text" id="reg-username" placeholder="Логин" />
+      <input type="email" id="reg-email" placeholder="Email" />
+      <input type="password" id="reg-password" placeholder="Пароль" />
+      <button class="btn-primary" onclick="doRegister()">Создать аккаунт</button>
+    </div>
+    <div id="msg" class="message"></div>
+  </div>
+</div>
+<script>
+const API = 'https://dream-mmorpg-production.up.railway.app';
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  event.target.classList.add('active');
+}
+function msg(text, ok) {
+  const el = document.getElementById('msg');
+  el.textContent = text;
+  el.className = 'message ' + (ok ? 'ok' : 'err');
+}
+async function doLogin() {
+  const u = document.getElementById('login-username').value.trim();
+  const p = document.getElementById('login-password').value;
+  if (!u || !p) return msg('Заполните все поля');
+  const fd = new FormData();
+  fd.append('username', u); fd.append('password', p);
+  const r = await fetch(API+'/login', {method:'POST', body: fd});
+  const d = await r.json();
+  if (r.ok) {
+    localStorage.setItem('token', d.access_token);
+    localStorage.setItem('username', u);
+    window.location.href = 'game.html';
+  } else msg(d.detail || 'Ошибка входа');
+}
+async function doRegister() {
+  const u = document.getElementById('reg-username').value.trim();
+  const e = document.getElementById('reg-email').value.trim();
+  const p = document.getElementById('reg-password').value;
+  if (!u || !e || !p) return msg('Заполните все поля');
+  const r = await fetch(API+'/register', {method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({username:u, email:e, password:p})});
+  const d = await r.json();
+  if (r.ok) msg('Аккаунт создан! Теперь войдите.', true);
+  else msg(d.detail || 'Ошибка регистрации');
+}
+</script>
+</body>
+</html>
