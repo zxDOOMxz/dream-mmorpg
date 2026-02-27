@@ -47,7 +47,6 @@ async def shutdown():
 class RegisterModel(BaseModel):
     login: str
     email: str
-    password: str
 
 class LoginModel(BaseModel):
     login: str
@@ -89,9 +88,8 @@ async def register(data: RegisterModel):
         if existing:
             raise HTTPException(status_code=400, detail="Логин или email уже занят")
         user_id = await conn.fetchval(
-            "INSERT INTO users (login, email, password_hash) VALUES ($1, $2, $3) RETURNING id",
-            data.login, data.email, hash_password(data.password)
-        )
+            "INSERT INTO users (login, password_hash) VALUES ($1, $2) RETURNING id",
+                data.login, hash_password(data.password)        )
         token = create_token(user_id)
         return {"status": "ok", "token": token, "user_id": user_id}
 
